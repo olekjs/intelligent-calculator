@@ -28,8 +28,10 @@ class Calculator extends Computations {
         break;
     }
   }
-  
   returnResult(result) {
-    $('.result').text(result);
+    $('.result').html(result);
+  }
+  clearInput() {
+    $('.operation').val('');
   }
 }

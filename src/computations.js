@@ -1,12 +1,16 @@
-class Computations {
+class Computations extends History {
 	constructor() {
-		//
+		super();
 	}
 	calculateAddition(operationValue) {
 		const firstNumber = /(\-[0-9]{0,9})|[0-9]{0,9}/.exec(operationValue);
 		const secondNumber = /\+(\d[0-9]{0,9})/.exec(operationValue);
 
-		return this.returnResult((parseInt(firstNumber) + parseInt(secondNumber)));
+		const result = parseInt(firstNumber) + parseInt(secondNumber);
+
+		this.addOperationToHistory(operationValue, result);
+
+		return this.returnResult(result);
 
 	}
 	calculateSubtraction(operationValue) {
@@ -32,7 +36,7 @@ class Computations {
 	calculateEquation(operationValue) {
 		const character = /[a-z|A-Z]/.exec(operationValue);
 		const firstNumber = parseInt(/([0-9]{1,9}[a-z|A-Z])|(\-[0-9]{1,9}[a-z|A-Z])/.exec(operationValue));
-		const secondNumber = parseInt(/(\-|\+)[0-9]{1,9}[^[a-z]/.exec(operationValue));
+		const secondNumber = parseInt(/(\-|\+)[0-9]{1,9}[^[a-z|A-Z]/.exec(operationValue));
 		const thirdNumber = /(\=\-[0-9]{1,9})|(\=[0-9]{1,9})/.exec(operationValue);
 
 		const thirdNumberRemoveEqual = parseInt(thirdNumber[0].replace('=', ' '));
@@ -40,6 +44,13 @@ class Computations {
 		const transferSecondNumber = (secondNumber * -1) + thirdNumberRemoveEqual;
 		const division = transferSecondNumber / firstNumber;
 
-		this.returnResult(`${character} = ${division}`);
+
+		const solution = `<p>${operationValue}</p>
+							<p>${firstNumber}${character} = ${transferSecondNumber} /: ${firstNumber}</p>
+							<p>${character} = <sup>${transferSecondNumber}</sup>&frasl;<sub>${firstNumber}</sub></p>`;
+
+		$('.solution').html(solution);
+
+		this.returnResult(`${character} = <sup>${transferSecondNumber}</sup>&frasl;<sub>${firstNumber}</sub>`);
 	}
 }
