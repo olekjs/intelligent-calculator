@@ -8,16 +8,16 @@ class Computations extends History {
 
 		const result = parseInt(firstNumber) + parseInt(secondNumber);
 
-		this.addOperationToHistory(operationValue, result);
-
-		return this.returnResult(result);
+		return this.returnResult(result, operationValue);
 
 	}
 	calculateSubtraction(operationValue) {
 		const firstNumber = /\-[0-9]{1,9}|[0-9]{1,9}/.exec(operationValue);
 		const secondNumber = /\-(\d*)/.exec(operationValue);
 
-		return this.returnResult((parseInt(firstNumber) + parseInt(secondNumber)));
+		const result = parseInt(firstNumber) + parseInt(secondNumber);
+
+		return this.returnResult(result, operationValue);
 	}
 	calculateMultiplication(operationValue) {
 		const firstNumber = /\-[0-9]{0,9}|[0-9]{0,9}/.exec(operationValue);
@@ -25,13 +25,18 @@ class Computations extends History {
 
 		const secondNumberRemoveEqual = parseInt(secondNumber[0].replace('*', ' '));
 
-		return this.returnResult((parseInt(firstNumber[0]) * secondNumberRemoveEqual));
+		const result = parseInt(firstNumber[0]) * secondNumberRemoveEqual;
+
+		return this.returnResult(result, operationValue);
 	}
 	calculateDivision(operationValue) {
 		const firstNumber = /\-[0-9]{0,9}|[0-9]{0,9}/.exec(operationValue);
 	    const secondNumber = /\/(\d*)/.exec(operationValue);
 
-	    return this.returnResult((parseInt(firstNumber)) / parseInt(secondNumber[1]));
+		const result = parseInt(firstNumber) / parseInt(secondNumber[1]);
+
+		return this.returnResult(result, operationValue);
+
 	}
 	calculateEquation(operationValue) {
 		const character = /[a-z|A-Z]/.exec(operationValue);
@@ -48,9 +53,8 @@ class Computations extends History {
 		const solution = `<p>${operationValue}</p>
 							<p>${firstNumber}${character} = ${transferSecondNumber} /: ${firstNumber}</p>
 							<p>${character} = <sup>${transferSecondNumber}</sup>&frasl;<sub>${firstNumber}</sub></p>`;
+		const result = `${character} = <sup>${transferSecondNumber}</sup>&frasl;<sub>${firstNumber}</sub>`;
 
-		$('.solution').html(solution);
-
-		this.returnResult(`${character} = <sup>${transferSecondNumber}</sup>&frasl;<sub>${firstNumber}</sub>`);
+		this.returnResult(result, operationValue, solution);
 	}
 }

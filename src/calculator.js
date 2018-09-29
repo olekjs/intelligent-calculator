@@ -5,8 +5,8 @@ class Calculator extends Computations {
   }
   watchCode()  {
     $('.operation').on('keyup', () => {
-      const operationValue = $('.operation').val();
-      this.calculateOperation(operationValue);
+      let $operationValue = $('.operation').val();
+      this.calculateOperation($operationValue);
     });
   }
   calculateOperation(operationValue) {
@@ -28,10 +28,13 @@ class Calculator extends Computations {
         break;
     }
   }
-  returnResult(result) {
+  returnResult(result, operationValue, solution = null) {
+    const $solutionHtml = $('.solution');
+
+    solution != 'null' ? $solutionHtml.html(solution) : $solutionHtml.html('');
+
     $('.result').html(result);
-  }
-  clearInput() {
-    $('.operation').val('');
+
+    this.addOperationToHistory(operationValue, result);
   }
 }

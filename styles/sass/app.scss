@@ -1,0 +1,8 @@
+$colorHover: blue;
+
+.history-element {
+    &:hover {
+        cursor: pointer;
+        color: $colorHover;
+    }
+}
